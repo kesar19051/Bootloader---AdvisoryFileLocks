@@ -1,17 +1,17 @@
-#include<stdio.h>          
-#include<string.h>                            
-#include<stdlib.h>    
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
 #include <errno.h>
 #include <sys/file.h>
-#include <fcntl.h>                        
-#include<termios.h>                            
-#include<unistd.h>  
+#include <fcntl.h>
+#include<termios.h>
+#include<unistd.h>
 
 enum editorKey {
   BACKSPACE = 127
 };
 
-int getch()                            
+int getch()
 {
 	struct termios oldt,
 	newt;
@@ -22,6 +22,7 @@ int getch()
 	tcsetattr( STDIN_FILENO, TCSANOW, &newt );
 	ch = getchar();
 	tcsetattr( STDIN_FILENO, TCSANOW, &oldt );
+	int y = 99;
 	return ch;
 }
 
@@ -45,14 +46,14 @@ typedef struct erow {
   char *rendered_characters;
   unsigned char *highlight;
   int highlight_open_comment;
-} erow;                         
+} erow;
 
-struct dll                    
+struct dll
 {
-	char s[500];                            
+	char s[500];
 	int index;
 	int y;
-	struct dll*prev,*next;            
+	struct dll*prev,*next;
 };
 
 
@@ -88,7 +89,7 @@ int main(int argc, char **argv){
             scanf("%d",&n);
             if (n==1){
                 return 0;
-            } 
+            }
         }
     }
 
@@ -98,7 +99,7 @@ head=(struct dll*)malloc(sizeof(struct dll));            //header node memory al
 (head->next)=(head->prev)=NULL;                //initialization
 (head->index)=0;
 
-while(100>1)                
+while(100>1)
 {
 
 system("clear");                        //clearing the screen
@@ -121,28 +122,28 @@ else if(c=='q'){
 	exit(1);
 }
 }
-}                               
+}
 
 
 int addnode(char t[],struct dll *q)        //function to add a new node after a node q
 {
 	struct dll*p=(struct dll*)malloc(sizeof(struct dll));
-	
+
 	char * filename;
 	struct dll *temp=q->next;
-	
+
 	strcpy(p->s,t);
 	p->prev=q;
 	char *fileptr;
 	p->next=q->next;
 
-if((q->next)!=NULL)        
+if((q->next)!=NULL)
 {
 	((q->next)->prev)=p;
 	char *ptr;
 	while(temp!=NULL)
 	{
-(temp->index)+=1;        
+(temp->index)+=1;
 
 temp=temp->next;
 }
@@ -161,23 +162,23 @@ int delnode(struct dll *p)                    //function to delete a node
 		((p->next)->prev)=p->prev;
 		while(temp!=NULL)
 		{
-(temp->index)--;        
+(temp->index)--;
 
 temp=temp->next;
 }
 }
-free(p); 
-return 0;                       
+free(p);
+return 0;
 }
 
-int clearlist(void)                        
+int clearlist(void)
 {
 	while(head->next!=NULL)
-	delnode(head->next);   
-	return 8;                
+	delnode(head->next);
+	return 8;
 }
 
-int printlist(void)            
+int printlist(void)
 {
 
 
@@ -186,16 +187,16 @@ int printlist(void)
 	while(temp->next!=NULL)
 	{
 		temp=temp->next;
-printf("%d %s\n",temp->index,temp->s);            
+printf("%d %s\n",temp->index,temp->s);
 }
 return 3;
 }
 
-void editnode(struct dll *p)                    
+void editnode(struct dll *p)
 {
 	printf("\nThe original line is :\n%s",p->s);
 	printf("\nEnter the new line :\n");
-fgets(p->s, 500, stdin);                            
+fgets(p->s, 500, stdin);
 printf("\nLine edited\n");
 }
 
@@ -203,9 +204,9 @@ printf("\nLine edited\n");
 
 int inp(char* fl)
 {
-struct dll *buff=head;                        
+struct dll *buff=head;
 char c;
-char buf[500];                            
+char buf[500];
 
 fflush(stdin);
 printf("\nOpening:");
@@ -243,7 +244,7 @@ while((fgets(buf,201,fp))!=NULL)                //taking input from file
 	addnode(buf,buff);
 	buff=buff->next;
 }
-edit();  
+edit();
 return 0;                          //calling the edit function
 }
 
@@ -341,7 +342,7 @@ int addline(struct dll *temp)                    //adding a new line via input f
 	char buff[500];
 	printf("\nenter the new line :\n");
 fgets(buff, 500, stdin);                            //taking the new line
-addnode(buff,temp); 
+addnode(buff,temp);
 return 0;                       //ceatng the new node
 }
 
